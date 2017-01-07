@@ -102,6 +102,11 @@ class Bp_Memories {
 	private function load_dependencies() {
 
 		/**
+		 * The core functions file.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/bp-memories-functions.php';
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
@@ -152,6 +157,14 @@ class Bp_Memories {
 	private function define_public_hooks() {
 
 		$plugin_public = new Bp_Memories_Public( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'bpm_enqueue_style' );
+
+		$post_array = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+
+		if ( ( empty( $post_array ) || ( ! empty( $post_array ) && ! empty( $post_array['action'] ) && 'activity_get_older_updates' === $post_array['action'] && empty( $post_array['page'] ) ) ) ) {
+			$this->loader->add_action( 'bp_before_activity_loop', $plugin_public, 'bpm_display_memories' );
+		}
 
 	}
 

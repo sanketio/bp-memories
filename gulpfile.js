@@ -2,6 +2,25 @@ var gulp 			= require( 'gulp' );
 var checktextdomain = require( 'gulp-checktextdomain' );
 var wpPot 			= require( 'gulp-wp-pot' );
 var sort 			= require( 'gulp-sort' );
+var sass 			= require( 'gulp-sass' );
+var cssbeautify 	= require( 'gulp-cssbeautify' );
+var cssmin 			= require( 'gulp-cssmin' );
+var rename 			= require( 'gulp-rename' );
+
+gulp.task( 'public-css', function() {
+	return gulp.src( 'public/css/sass/**/*.scss' )
+		.pipe( sass() ) // Converts Sass to CSS with gulp-sass
+		.pipe( cssbeautify() ) // Beautifying CSS
+		.pipe( gulp.dest( 'public/css' ) )
+} );
+
+gulp.task( 'public-min-css', function() {
+	return gulp.src( 'public/css/sass/**/*.scss' )
+		.pipe( sass() ) // Converts Sass to CSS with gulp-sass
+		.pipe( cssmin() ) // CSS Minification
+		.pipe( rename( { suffix: '.min' } ) ) // Renaming minified CSS file
+		.pipe( gulp.dest( 'public/css' ) )
+} );
 
 gulp.task( 'checktextdomain', function() {
 	return gulp.src( '**/*.php' )
@@ -40,4 +59,9 @@ gulp.task( 'makepot', function () {
 		.pipe( gulp.dest( 'languages/' ) );
 } );
 
-gulp.task( 'default', ['checktextdomain', 'makepot'] );
+gulp.task( 'watch', function() {
+	gulp.watch( 'public/css/sass/**/*.scss', ['public-css'] );
+	gulp.watch( 'public/css/sass/**/*.scss', ['public-min-css'] );
+} );
+
+gulp.task( 'default', ['watch', 'checktextdomain', 'makepot'] );
