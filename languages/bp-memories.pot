@@ -14,22 +14,26 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: public/class-bp-memories-public.php:117
+#: admin/class-bp-memories-admin.php:85
+msgid "Memories"
+msgstr ""
+
+#: public/class-bp-memories-public.php:120
 msgid "Profile picture of %s"
 msgstr ""
 
-#: public/class-bp-memories-public.php:117
+#: public/class-bp-memories-public.php:120
 msgid "Profile picture"
 msgstr ""
 
-#: public/class-bp-memories-public.php:148
+#: public/class-bp-memories-public.php:154
 msgid "On This Day"
 msgstr ""
 
-#: public/class-bp-memories-public.php:176
+#: public/class-bp-memories-public.php:191
 msgid "View Discussion"
 msgstr ""
 
-#: public/class-bp-memories-public.php:193
+#: public/class-bp-memories-public.php:214
 msgid "See More Memories"
 msgstr ""

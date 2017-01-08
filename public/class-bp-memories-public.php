@@ -7,8 +7,8 @@
  *
  * @since       1.0.0
  *
- * @package     Bp_Memories
- * @subpackage  Bp_Memories / public
+ * @package     BP_Memories
+ * @subpackage  BP_Memories / public
  */
 
 /**
@@ -16,10 +16,10 @@
  *
  * @since       1.0.0
  *
- * @package     Bp_Memories
- * @subpackage  Bp_Memories / public
+ * @package     BP_Memories
+ * @subpackage  BP_Memories / public
  */
-class Bp_Memories_Public {
+class BP_Memories_Public {
 
 	/**
 	 * The ID of this plugin.

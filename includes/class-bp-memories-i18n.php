@@ -10,8 +10,8 @@
  *
  * @since       1.0.0
  *
- * @package     Bp_Memories
- * @subpackage  Bp_Memories / includes
+ * @package     BP_Memories
+ * @subpackage  BP_Memories / includes
  */
 
 /**
@@ -22,10 +22,10 @@
  *
  * @since       1.0.0
  *
- * @package     Bp_Memories
- * @subpackage  Bp_Memories / includes
+ * @package     BP_Memories
+ * @subpackage  BP_Memories / includes
  */
-class Bp_Memories_i18n {
+class BP_Memories_i18n {
 
 	/**
 	 * Load the plugin text domain for translation.

@@ -12,7 +12,7 @@
  *
  * @since           1.0.0
  *
- * @package         Bp_Memories
+ * @package         BP_Memories
  *
  * @wordpress-plugin
  * Plugin Name:     BP Memories
@@ -48,7 +48,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-bp-memories.php';
  */
 function run_bp_memories() {
 
-	$bp_memories = new Bp_Memories();
+	$bp_memories = new BP_Memories();
 	$bp_memories->run();
 
 }

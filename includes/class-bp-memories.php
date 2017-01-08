@@ -10,8 +10,8 @@
  *
  * @since       1.0.0
  *
- * @package     Bp_Memories
- * @subpackage  Bp_Memories / includes
+ * @package     BP_Memories
+ * @subpackage  BP_Memories / includes
  */
 
 /**
@@ -24,10 +24,10 @@
  *
  * @since       1.0.0
  *
- * @package     Bp_Memories
- * @subpackage  Bp_Memories / includes
+ * @package     BP_Memories
+ * @subpackage  BP_Memories / includes
  */
-class Bp_Memories {
+class BP_Memories {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -37,7 +37,7 @@ class Bp_Memories {
 	 *
 	 * @access  protected
 	 *
-	 * @var     Bp_Memories_Loader  $loader Maintains and registers all hooks for the plugin.
+	 * @var     BP_Memories_Loader  $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -79,6 +79,7 @@ class Bp_Memories {
 
 		$this->load_dependencies();
 		$this->set_locale();
+		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
 	}
@@ -88,9 +89,10 @@ class Bp_Memories {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Bp_Memories_Loader.    Orchestrates the hooks of the plugin.
-	 * - Bp_Memories_i18n.      Defines internationalization functionality.
-	 * - Bp_Memories_Public.    Defines all hooks for the public side of the site.
+	 * - BP_Memories_Loader.    Orchestrates the hooks of the plugin.
+	 * - BP_Memories_i18n.      Defines internationalization functionality.
+	 * - BP_Memories_Admin.     Defines all hooks for the admin area.
+	 * - BP_Memories_Public.    Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -119,19 +121,24 @@ class Bp_Memories {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-bp-memories-i18n.php';
 
 		/**
+		 * The class responsible for defining all actions that occur in the admin area.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-memories-admin.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-bp-memories-public.php';
 
-		$this->loader = new Bp_Memories_Loader();
+		$this->loader = new BP_Memories_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Bp_Memories_i18n class in order to set the domain and to register the hook
+	 * Uses the BP_Memories_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since   1.0.0
@@ -140,9 +147,28 @@ class Bp_Memories {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Bp_Memories_i18n();
+		$plugin_i18n = new BP_Memories_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the admin area functionality
+	 * of the plugin.
+	 *
+	 * @since   1.0.0
+	 *
+	 * @access  private
+	 */
+	private function define_admin_hooks() {
+
+		$plugin_admin = new BP_Memories_Admin( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'init', $plugin_admin, 'bpm_create_memory_page' );
+
+		$this->loader->add_filter( 'bp_directory_pages', $plugin_admin, 'bpm_directory_pages' );
+		$this->loader->add_filter( 'bp_core_get_directory_page_ids', $plugin_admin, 'bpm_get_directory_page_ids' );
 
 	}
 
@@ -156,7 +182,7 @@ class Bp_Memories {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Bp_Memories_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new BP_Memories_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'bpm_enqueue_style' );
 
@@ -204,7 +230,7 @@ class Bp_Memories {
 	 *
 	 * @access  public
 	 *
-	 * @return  Bp_Memories_Loader  Orchestrates the hooks of the plugin.
+	 * @return  BP_Memories_Loader  Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 
