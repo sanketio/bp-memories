@@ -211,7 +211,22 @@ class BP_Memories_Public {
 							</div>
 						</div>
 					</div>
-					<input type="button" class="button bp-more-memories" value="<?php esc_html_e( 'See More Memories', 'bp-memories' ); ?>" />
+					<?php
+					$bp_pages = bp_get_option( 'bp-pages' );
+					$memory_page = '';
+
+					if ( ! empty( $bp_pages['memories'] ) ) {
+						$memory_page = get_permalink( $bp_pages['memories'] );
+					} else {
+						$memory_page = get_option( 'bpm_memory_page' );
+					}
+
+					if ( ! empty( $memory_page ) ) {
+						?>
+						<a class="button bp-more-memories" href="<?php echo esc_url( $memory_page ); ?>"><?php esc_html_e( 'See More Memories', 'bp-memories' ); ?></a>
+						<?php
+					}
+					?>
 				</div>
 				<?php
 			}
