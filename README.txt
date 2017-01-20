@@ -7,11 +7,11 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Using BP Memories you can see your memory regarding BuddyPress such as activity, when you become friend with someone.
+Using BP Memories you can see your memory regarding BuddyPress such as activity.
 
 == Description ==
 
-BP Memories plugin is useful to see your memory regarding BuddyPress such as activity, when you become friend with someone.
+BP Memories plugin is useful to see your memory regarding BuddyPress such as activity.
 
 == Installation ==
 

@@ -192,6 +192,8 @@ class BP_Memories {
 			$this->loader->add_action( 'bp_before_activity_loop', $plugin_public, 'bpm_display_memories' );
 		}
 
+		$this->loader->add_filter( 'the_content', $plugin_public, 'bpm_memory_template' );
+
 	}
 
 	/**

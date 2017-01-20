@@ -14,26 +14,32 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/class-bp-memories-admin.php:85
+#: admin/class-bp-memories-admin.php:106
 msgid "Memories"
 msgstr ""
 
-#: public/class-bp-memories-public.php:120
+#: public/class-bp-memories-public.php:119, public/partials/activities.php:62
 msgid "Profile picture of %s"
 msgstr ""
 
-#: public/class-bp-memories-public.php:120
+#: public/class-bp-memories-public.php:119, public/partials/activities.php:62
 msgid "Profile picture"
 msgstr ""
 
-#: public/class-bp-memories-public.php:154
+#: public/class-bp-memories-public.php:153
 msgid "On This Day"
 msgstr ""
 
-#: public/class-bp-memories-public.php:191
+#: public/class-bp-memories-public.php:190, public/partials/activities.php:130
 msgid "View Discussion"
 msgstr ""
 
-#: public/class-bp-memories-public.php:214
+#: public/class-bp-memories-public.php:224
 msgid "See More Memories"
 msgstr ""
+
+#: public/partials/activities.php:29
+msgid "%s Year Ago Today"
+msgid_plural "%s Years Ago Today"
+msgstr[0] ""
+msgstr[1] ""

@@ -74,81 +74,18 @@ class BP_Memories_Public {
 
 	public function bpm_display_memories() {
 
-		$date = getdate();
-
-		// Checking if BP_Activity_Activity class exists.
-		if ( is_user_logged_in() && class_exists( 'BP_Activity_Activity' ) ) {
-			$old_single_activity = array();
-
-			// Checking for an older activity.
-			for ( $i = ( $date['year'] - 1 ); $i >= 2009; $i-- ) {
-				$args = array(
-					'per_page' => 1,
-					'date_query' => array(
-						array(
-							'year'  => $i,
-							'month' => $date['mon'],
-							'day'   => $date['mday'],
-						),
-					),
-				);
-
-				// Get single activity.
-				$single_activity = bp_activity_get( $args );
-
-				// If found single activity then break.
-				if ( ! empty( $single_activity['activities'] ) ) {
-					$old_single_activity = $single_activity['activities'];
-
-					break;
-				}
-			}
+		// Checking if BuddyPress plugin is active.
+		if ( is_user_logged_in() && is_buddypress_active() ) {
+			// Get old activities.
+			$old_activities = bpm_activities( 1 );
 
 			// Display single old activity if exists.
-			if ( ! empty( $old_single_activity ) ) {
-				$user_id   	  = bp_loggedin_user_id();
-				$user_link 	  = bp_core_get_user_domain( $user_id, $old_single_activity[0]->user_nicename, $old_single_activity[0]->user_login );
-				$bp 		  = buddypress();
-				$object  	  = apply_filters( 'bp_get_activity_avatar_object_' . $old_single_activity[0]->component, 'user' );
-				$type_default = bp_is_single_activity() ? 'full' : 'thumb';
-				$email 		  = false;
-
-				// Activity user display name.
-				$dn_default  = isset( $old_single_activity[0]->display_name ) ? $old_single_activity[0]->display_name : '';
-
-				// Prepend some descriptive text to alt.
-				$alt_default = ! empty( $dn_default ) ? sprintf( __( 'Profile picture of %s', 'bp-memories' ), $dn_default ) : __( 'Profile picture', 'bp-memories' );
-
-				// Avatar width.
-				if ( isset( $bp->avatar->full->width ) || isset( $bp->avatar->thumb->width ) ) {
-					$width = ( 'full' === $type_default ) ? $bp->avatar->full->width : $bp->avatar->thumb->width;
-				} else {
-					$width = 20;
-				}
-
-				// Avatar height.
-				if ( isset( $bp->avatar->full->height ) || isset( $bp->avatar->thumb->height ) ) {
-					$height = ( 'full' === $type_default ) ? $bp->avatar->full->height : $bp->avatar->thumb->height;
-				} else {
-					$height = 20;
-				}
-
-				// If this is a user object pass the users' email address for Gravatar so we don't have to prefetch it.
-				if ( 'user' === $object && empty( $user_id ) && empty( $email ) && isset( $old_single_activity[0]->user_email ) ) {
-					$email = $old_single_activity[0]->user_email;
-				}
-
-				// Arguments array for fetching avatar.
-				$args = array(
-					'item_id' => $user_id,
-					'object'  => $object,
-					'type'    => $type_default,
-					'alt'     => $alt_default,
-					'class'   => 'avatar',
-					'width'   => $width,
-					'height'  => $height,
-					'email'   => $email,
-				);
+			if ( ! empty( $old_activities ) ) {
+				// Get single activity.
+				$old_single_activity = $old_activities[0]['activities'];
+				$user_id   			 = bp_loggedin_user_id();
+				$user_link 			 = bp_core_get_user_domain( $user_id, $old_single_activity[0]->user_nicename, $old_single_activity[0]->user_login );
+				$args 	   			 = bpm_get_avatar_args( $old_single_activity[0] );
 				?>
 				<div class="bp-memories-wrapper">
 					<h3><?php esc_html_e( 'On This Day', 'bp-memories' ); ?></h3>
@@ -157,15 +94,7 @@ class BP_Memories_Public {
 							<div class="bpm-activity-avatar">
 								<a href="<?php echo esc_attr( $user_link ); ?>">
 									<?php
-									$allowed_tag = array(
-										'img' => array(
-											'src' => array(),
-											'class' => array(),
-											'width' => array(),
-											'height' => array(),
-											'alt' => array(),
-										),
-									);
+									$allowed_tag = bpm_activity_avatar_kses_tags();
 
 									// Fetch avatar of user.
 									echo wp_kses( bp_core_fetch_avatar( $args ), $allowed_tag ); ?>
@@ -175,18 +104,12 @@ class BP_Memories_Public {
 								<div class="bpm-activity-header">
 									<p>
 										<?php
-										$date_recorded 		= bp_core_time_since( $old_single_activity[0]->date_recorded );
-										$activity_permalink = bp_activity_get_permalink( $old_single_activity[0]->id );
-
-										$allowed_tag = array(
-											'a' => array(
-												'href' => array(),
-												'class' => array(),
-												'title' => array(),
-											),
-										);
+										$allowed_tag = bpm_activity_action_kses_tags();
 
 										echo wp_kses( $old_single_activity[0]->action, $allowed_tag );
+
+										$date_recorded 		= bp_core_time_since( $old_single_activity[0]->date_recorded );
+										$activity_permalink = bp_activity_get_permalink( $old_single_activity[0]->id );
 										?>
 										<a href="<?php echo esc_attr( $activity_permalink ); ?>" class="view bpm-activity-time-since" title="<?php esc_attr_e( 'View Discussion', 'bp-memories' ); ?>">
 											<span class="time-since"><?php echo esc_html( $date_recorded ); ?></span>
@@ -213,7 +136,6 @@ class BP_Memories_Public {
 					</div>
 					<?php
 					$bp_pages = bp_get_option( 'bp-pages' );
-					$memory_page = '';
 
 					if ( ! empty( $bp_pages['memories'] ) ) {
 						$memory_page = get_permalink( $bp_pages['memories'] );
@@ -244,6 +166,40 @@ class BP_Memories_Public {
 	public function bpm_enqueue_style() {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/bp-memories-public' . $this->suffix . '.css', '', $this->version );
+
+	}
+
+	/**
+	 * Load memories template.
+	 *
+	 * @since	1.0.0
+	 *
+	 * @access	public
+	 *
+	 * @param	string	$template	Content of template.
+	 *
+	 * @return 	string	Content of template.
+	 */
+	public function bpm_memory_template( $template ) {
+
+		global $post;
+
+		$bp_pages = bp_get_option( 'bp-pages' );
+
+		// Check for memories template.
+		if ( ! empty( $bp_pages['memories'] ) && ( (int) $post->ID === (int) $bp_pages['memories'] ) ) {
+			ob_start();
+			load_template( bpm_locate_template( 'memories' ) );
+
+			// Get memories template content.
+			$template_content = ob_get_contents();
+
+			ob_end_clean();
+
+			return $template_content;
+		}
+
+		return $template;
 
 	}
 
