@@ -83,5 +83,16 @@ if ( is_user_logged_in() && is_buddypress_active() ) {
 			</div>
 			<?php
 		}
+	} else {
+		?>
+		<div class="no-bp-memories">
+			<?php
+			$message = __( 'No memories found.!', 'bp-memories' );
+			$message = apply_filters( 'bpm_no_memories_found', $message );
+
+			echo esc_html( $message );
+			?>
+		</div>
+		<?php
 	}
 }

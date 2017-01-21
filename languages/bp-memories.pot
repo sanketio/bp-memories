@@ -18,28 +18,32 @@ msgstr ""
 msgid "Memories"
 msgstr ""
 
-#: public/class-bp-memories-public.php:119, public/partials/activities.php:62
+#: includes/bp-memories-functions.php:159
 msgid "Profile picture of %s"
 msgstr ""
 
-#: public/class-bp-memories-public.php:119, public/partials/activities.php:62
+#: includes/bp-memories-functions.php:159
 msgid "Profile picture"
 msgstr ""
 
-#: public/class-bp-memories-public.php:153
+#: includes/bp-memories-functions.php:293
+msgid "%d Year Ago Today"
+msgid_plural "%d Years Ago Today"
+msgstr[0] ""
+msgstr[1] ""
+
+#: public/class-bp-memories-public.php:91
 msgid "On This Day"
 msgstr ""
 
-#: public/class-bp-memories-public.php:190, public/partials/activities.php:130
+#: public/class-bp-memories-public.php:114, public/partials/activities.php:57
 msgid "View Discussion"
 msgstr ""
 
-#: public/class-bp-memories-public.php:224
+#: public/class-bp-memories-public.php:148
 msgid "See More Memories"
 msgstr ""
 
-#: public/partials/activities.php:29
-msgid "%s Year Ago Today"
-msgid_plural "%s Years Ago Today"
-msgstr[0] ""
-msgstr[1] ""
+#: public/partials/activities.php:90
+msgid "No memories found.!"
+msgstr ""
