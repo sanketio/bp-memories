@@ -35,6 +35,10 @@ Yes! BP Memories works out-of-the-box with nearly every BuddyPress supported the
 
 == Screenshots ==
 
+1. On This Day on Site-Wide Activity page
+2. Memories
+3. No memories found
+
 == Changelog ==
 
 = 1.0 =
