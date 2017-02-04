@@ -2,7 +2,7 @@
 Contributors: sanket.parmar
 Tags: buddypress, memories, bp-memories, memory
 Requires at least: WordPress 4.0
-Tested up to: WordPress 4.7
+Tested up to: WordPress 4.7.2
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,6 +12,8 @@ Using BP Memories you can see your memory regarding BuddyPress such as activity.
 == Description ==
 
 BP Memories plugin is useful to see your memory regarding BuddyPress such as activity.
+
+If you really like this plugin, you can rate here -> https://wordpress.org/support/plugin/bp-memories/reviews#new-topic-0
 
 == Installation ==
 
@@ -43,8 +45,9 @@ Yes! BP Memories works out-of-the-box with nearly every BuddyPress supported the
 
 = 1.0 =
 * Initial Release
+* Display activity memories
 
 == Upgrade Notice ==
 
 = 1.0 =
-Initial Release.
+Initial Release, Display activity memories.
