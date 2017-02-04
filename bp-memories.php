@@ -16,7 +16,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:     BP Memories
- * Plugin URI:      https://gitlab.com/sanket.parmar11/bp-memories
+ * Plugin URI:      https://github.com/sanketio/bp-memories
  * Description:     This plugin is useful to see memories for BuddyPress.
  * Version:         1.0.0
  * Author:          Sanket

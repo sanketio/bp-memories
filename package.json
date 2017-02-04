@@ -22,9 +22,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com:sanket.parmar11/bp-memories.git"
+    "url": "git+ssh://git@github.com:sanketio/bp-memories.git"
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://gitlab.com/sanket.parmar11/bp-memories"
+  "homepage": "https://github.com/sanketio/bp-memories"
 }
