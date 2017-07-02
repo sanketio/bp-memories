@@ -132,4 +132,28 @@ class BP_Memories_Admin {
 
 	}
 
+
+	/**
+	 * Add Settings link to plugins area.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $links Links array in which we would prepend our link.
+	 * @param string $file Current plugin basename.
+	 *
+	 * @return array Processed links.
+	 */
+	public function bpm_plugin_action_links( $links, $file ) {
+
+		// Return normal links if not BP Memories.
+		if ( plugin_basename( 'bp-memories/bp-memories.php' ) !== $file ) {
+
+			return $links;
+		}
+
+		// Add a few links to the existing links array.
+		return array_merge( $links, array(
+			'settings' => '<a href="' . esc_url( bp_get_admin_url( add_query_arg( array( 'page' => 'bp-page-settings' ), 'admin.php' ) ) ) . '">' . esc_html__( 'Settings', 'bp-memories' ) . '</a>',
+		) );
+	}
 }
