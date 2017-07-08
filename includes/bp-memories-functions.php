@@ -329,3 +329,71 @@ function is_buddypress_active() {
 	}
 
 }
+
+
+/**
+ * Returns memory page link.
+ *
+ * @since 1.1.0
+ *
+ * @return false|mixed|string|void
+ */
+function bpm_get_memory_page_link() {
+
+	$bp_pages = bp_get_option( 'bp-pages' );
+
+	if ( ! empty( $bp_pages['memories'] ) ) {
+		$memory_page = get_permalink( $bp_pages['memories'] );
+	} else {
+		$memory_page = get_option( 'bpm_memory_page' );
+	}
+
+	return $memory_page;
+}
+
+
+/**
+ * Output the avatar of the user that performed the action.
+ *
+ * @since 1.1.0
+ *
+ * @param object $activity BuddyPress activity object
+ */
+function bpm_activity_avatar( $activity ) {
+
+	$args        = bpm_get_avatar_args( $activity );
+	$allowed_tag = bpm_activity_avatar_kses_tags();
+
+	// output avatar of user
+	echo wp_kses( bp_core_fetch_avatar( $args ), $allowed_tag );
+}
+
+
+/**
+ * Output the action of the activity.
+ *
+ * @since 1.1.0
+ *
+ * @param object $activity BuddyPress activity object
+ */
+function bpm_activity_action( $activity ) {
+
+	$allowed_tag = bpm_activity_action_kses_tags();
+
+	echo wp_kses( $activity->action, $allowed_tag );
+}
+
+
+/**
+ * Output the content of the activity.
+ *
+ * @since 1.1.0
+ *
+ * @param object $activity BuddyPress activity object
+ */
+function bpm_activity_content( $activity ) {
+
+	$allowed_tags = bpm_activity_filter_kses();
+
+	echo wp_kses( $activity->content, $allowed_tags );
+}
