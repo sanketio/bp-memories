@@ -86,13 +86,13 @@ class BP_Memories_Public {
 		if ( is_user_logged_in() && is_buddypress_active() ) {
 
 			// Get old activities.
-			$old_activities = bpm_activities( 1 );
+			$memories = bpm_memories( 1 );
 
 			// Display single old activity if exists.
-			if ( ! empty( $old_activities ) ) {
+			if ( ! empty( $memories ) ) {
 
 				// Get single activity.
-				$activity  = $old_activities[0]['activities'][0];
+				$activity  = $memories[0]['memories'][0];
 				$user_link = bp_core_get_user_domain( bp_loggedin_user_id(), $activity->user_nicename, $activity->user_login );
 
 				include( bpm_locate_template( 'single/activity/header' ) );
