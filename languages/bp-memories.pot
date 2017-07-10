@@ -40,7 +40,7 @@ msgstr ""
 msgid "View Discussion"
 msgstr ""
 
-#: public/class-bp-memories-public.php:148
+#: public/class-bp-memories-public.php:154
 msgid "See More Memories"
 msgstr ""
 

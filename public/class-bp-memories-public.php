@@ -72,20 +72,30 @@ class BP_Memories_Public {
 
 	}
 
+
+	/**
+	 * Display single memory on activity page
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
 	public function bpm_display_memories() {
 
 		// Checking if BuddyPress plugin is active.
-		if ( is_user_logged_in() && is_buddypress_active() ) {
+		if ( is_user_logged_in() && is_buddypress_active() ) :
+
 			// Get old activities.
 			$old_activities = bpm_activities( 1 );
 
 			// Display single old activity if exists.
-			if ( ! empty( $old_activities ) ) {
+			if ( ! empty( $old_activities ) ) :
+
 				// Get single activity.
 				$old_single_activity = $old_activities[0]['activities'];
-				$user_id   			 = bp_loggedin_user_id();
-				$user_link 			 = bp_core_get_user_domain( $user_id, $old_single_activity[0]->user_nicename, $old_single_activity[0]->user_login );
-				$args 	   			 = bpm_get_avatar_args( $old_single_activity[0] );
+				$user_id             = bp_loggedin_user_id();
+				$user_link           = bp_core_get_user_domain( $user_id, $old_single_activity[0]->user_nicename, $old_single_activity[0]->user_login );
+				$args                = bpm_get_avatar_args( $old_single_activity[0] );
 				?>
 				<div class="bp-memories-wrapper">
 					<h3><?php esc_html_e( 'On This Day', 'bp-memories' ); ?></h3>
@@ -108,7 +118,7 @@ class BP_Memories_Public {
 
 										echo wp_kses( $old_single_activity[0]->action, $allowed_tag );
 
-										$date_recorded 		= bp_core_time_since( $old_single_activity[0]->date_recorded );
+										$date_recorded      = bp_core_time_since( $old_single_activity[0]->date_recorded );
 										$activity_permalink = bp_activity_get_permalink( $old_single_activity[0]->id );
 										?>
 										<a href="<?php echo esc_attr( $activity_permalink ); ?>" class="view bpm-activity-time-since" title="<?php esc_attr_e( 'View Discussion', 'bp-memories' ); ?>">
@@ -117,7 +127,8 @@ class BP_Memories_Public {
 									</p>
 								</div>
 								<?php
-								if ( ! empty( $old_single_activity[0]->content ) ) {
+								if ( ! empty( $old_single_activity[0]->content ) ) :
+
 									?>
 									<div class="bpm-activity-inner">
 										<p>
@@ -129,7 +140,8 @@ class BP_Memories_Public {
 										</p>
 									</div>
 									<?php
-								}
+
+								endif;
 								?>
 							</div>
 						</div>
@@ -138,22 +150,30 @@ class BP_Memories_Public {
 					$bp_pages = bp_get_option( 'bp-pages' );
 
 					if ( ! empty( $bp_pages['memories'] ) ) {
-						$memory_page = get_permalink( $bp_pages['memories'] );
+
+						$memory_page_id = $bp_pages['memories'];
+
 					} else {
-						$memory_page = get_option( 'bpm_memory_page' );
+
+						$memory_page_id = get_option( 'bpm_memory_page' );
 					}
 
-					if ( ! empty( $memory_page ) ) {
+					$memory_page = get_permalink( $memory_page_id );
+
+					if ( ! empty( $memory_page ) ) :
+
 						?>
 						<a class="button bp-more-memories" href="<?php echo esc_url( $memory_page ); ?>"><?php esc_html_e( 'See More Memories', 'bp-memories' ); ?></a>
 						<?php
-					}
+
+					endif;
 					?>
 				</div>
 				<?php
-			}
-		}
 
+			endif;
+
+		endif;
 	}
 
 	/**
