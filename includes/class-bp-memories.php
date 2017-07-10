@@ -75,7 +75,7 @@ class BP_Memories {
 	public function __construct() {
 
 		$this->plugin_name = 'bp-memories';
-		$this->version     = '1.0.0';
+		$this->version     = '1.1.0';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -169,6 +169,10 @@ class BP_Memories {
 
 		$this->loader->add_filter( 'bp_directory_pages', $plugin_admin, 'bpm_directory_pages' );
 		$this->loader->add_filter( 'bp_core_get_directory_page_ids', $plugin_admin, 'bpm_get_directory_page_ids' );
+
+		// Add link to settings page.
+		$this->loader->add_filter( 'plugin_action_links', $plugin_admin, 'bpm_plugin_action_links', 11, 2 );
+		$this->loader->add_filter( 'network_admin_plugin_action_links', $plugin_admin, 'bpm_plugin_action_links', 11, 2 );
 
 	}
 

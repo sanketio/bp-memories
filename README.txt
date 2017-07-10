@@ -2,8 +2,8 @@
 Contributors: sanket.parmar
 Tags: buddypress, memories, bp-memories, memory
 Requires at least: WordPress 4.0
-Tested up to: WordPress 4.7.2
-Stable tag: 1.0.0
+Tested up to: WordPress 4.8
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,11 +43,16 @@ Yes! BP Memories works out-of-the-box with nearly every BuddyPress supported the
 
 == Changelog ==
 
-= 1.0 =
+= 1.1.0 =
+* Tweak - Add settings link in plugins area
+* Tweak - Display friends memory
+* Fix - Default memory page link not working
+
+= 1.0.0 =
 * Initial Release
 * Display activity memories
 
 == Upgrade Notice ==
 
-= 1.0 =
-Initial Release, Display activity memories.
+= 1.1.0 =
+Add settings link in plugins area, Display friends memory, Default memory page link not working.
