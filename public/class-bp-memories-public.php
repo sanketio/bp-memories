@@ -82,10 +82,10 @@ class BP_Memories_Public {
 	 */
 	public function bpm_display_memories() {
 
-		// Checking if BuddyPress plugin is active.
-		if ( is_user_logged_in() && is_buddypress_active() ) {
+		// Checking if Memories are allowed.
+		if ( bpm_is_memory_page_allowed() ) {
 
-			// Get old activities.
+			// Get memories.
 			$memories = bpm_memories( 1 );
 
 			// Display single old activity if exists.

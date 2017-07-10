@@ -6,7 +6,7 @@
  * @since       1.1.0
  *
  * @package     BP_Memories
- * @subpackage  BP_Memories / public / partials
+ * @subpackage  BP_Memories / public / partials / single / activity
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
