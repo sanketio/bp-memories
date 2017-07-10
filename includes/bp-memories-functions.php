@@ -268,6 +268,80 @@ function bpm_activity_args( $year, $date, $per_page = false ) {
 
 }
 
+
+/**
+ * Returns activity memories.
+ *
+ * @since   1.1.0
+ *
+ * @param bool/int $per_page Activities per page
+ *
+ * @return array Activities array.
+ */
+function bpm_memories( $per_page = false ) {
+
+	$memories = array();
+	$date     = getdate();
+
+	// checking for an older activity
+	for ( $year = ( $date['year'] - 1 ); $year >= 2009; $year-- ) {
+
+		// setting arguments to get BuddyPress activities
+		$args = bpm_activity_args( $year, $date, $per_page );
+
+		// get activities
+		$activities = bp_activity_get( $args );
+
+		// setting up memory array
+		$memory = array(
+			'year' => $year,
+			'time' => sprintf( _n( '%d Year Ago Today', '%d Years Ago Today', ( $date['year'] - $year ), 'bp-memories' ), ( $date['year'] - $year ) ),
+			'date' => date( 'D, M d, ' . $year, strtotime( $date['mday'] . '-' . $date['mon'] . '-' . $year ) ),
+		);
+
+		// checking if activities exists for today's date
+		if ( ! empty( $activities['activities'] ) ) {
+
+			$memory['memories'] = $activities['activities'];
+
+			$memories[] = $memory;
+
+			// break the loop if single memory being shown on activity page
+			if ( 1 === $per_page ) {
+
+				break;
+			}
+		} else {
+
+			// get friendship created activity based on user ids, i.e., current logged in user id or friend's user id
+			$all_friends = bpm_get_friendship_ids_for_user_by_date( $year, $per_page );
+
+			if ( ! empty( $all_friends ) ) {
+
+				// get activities
+				$activities = bp_activity_get( array(
+					'filter' => array(
+						'action'     => 'friendship_created',
+						'primary_id' => $all_friends[0]->id,
+					),
+				) );
+
+				$memory['memories'] = $activities['activities'];
+
+				$memories[] = $memory;
+
+				// break the loop if single memory being shown on activity page
+				if ( 1 === $per_page ) {
+
+					break;
+				}
+			}
+		}
+	}
+
+	return $memories;
+}
+
 /**
  * Get old activities.
  *
@@ -328,4 +402,155 @@ function is_buddypress_active() {
 		return false;
 	}
 
+}
+
+
+/**
+ * Returns memory page link.
+ *
+ * @since 1.1.0
+ *
+ * @return false|mixed|string|void
+ */
+function bpm_get_memory_page_link() {
+
+	$bp_pages = bp_get_option( 'bp-pages' );
+
+	if ( ! empty( $bp_pages['memories'] ) ) {
+		$memory_page = get_permalink( $bp_pages['memories'] );
+	} else {
+		$memory_page = get_permalink( get_option( 'bpm_memory_page' ) );
+	}
+
+	return $memory_page;
+}
+
+
+/**
+ * Output the avatar of the user that performed the action.
+ *
+ * @since 1.1.0
+ *
+ * @param object $activity BuddyPress activity object
+ */
+function bpm_activity_avatar( $activity ) {
+
+	$args        = bpm_get_avatar_args( $activity );
+	$allowed_tag = bpm_activity_avatar_kses_tags();
+
+	// output avatar of user
+	echo wp_kses( bp_core_fetch_avatar( $args ), $allowed_tag );
+}
+
+
+/**
+ * Output the action of the activity.
+ *
+ * @since 1.1.0
+ *
+ * @param object $activity BuddyPress activity object
+ */
+function bpm_activity_action( $activity ) {
+
+	$allowed_tag = bpm_activity_action_kses_tags();
+	$action      = $activity->action;
+
+	// create custom action when activity is of type friendship_request
+	if ( 'friendship_created' === $activity->type ) {
+
+		$activity_user_id = $activity->user_id;
+		$user_id          = bp_loggedin_user_id();
+
+		// get $friend_id to create custom action
+		if ( (int) $activity_user_id === (int) $user_id ) {
+
+			$friend_id = $activity->secondary_item_id;
+
+		} else {
+
+			$friend_id = $activity_user_id;
+		}
+
+		// get friend's data
+		$friend_data = get_userdata( $friend_id );
+
+		$user_link   = bp_core_get_user_domain( $user_id );
+		$friend_link = bp_core_get_user_domain( $friend_id );
+
+		/* translators: Placeholders: %1$s - <a> tag, %2$s - </a> tag, %3$s - <a> tag */
+		$action = sprintf( __( '%1$sYou%2$s and %3$s became friends', 'bp-memories' ),
+			'<a href="' . $user_link . '">',
+			'</a>',
+			'<a href="' . $friend_link . '">' . $friend_data->display_name . '</a>' );
+	}
+
+	$action = wp_kses( $action, $allowed_tag );
+	
+	echo $action;
+}
+
+
+/**
+ * Output the content of the activity.
+ *
+ * @since 1.1.0
+ *
+ * @param object $activity BuddyPress activity object
+ */
+function bpm_activity_content( $activity ) {
+
+	$allowed_tags = bpm_activity_filter_kses();
+
+	echo wp_kses( $activity->content, $allowed_tags );
+}
+
+
+/**
+ * Get all friendship IDs for a user by year.
+ *
+ * @since 1.1.0
+ *
+ * @param int $year Year.
+ *
+ * @return array
+ */
+function bpm_get_friendship_ids_for_user_by_date( $year, $per_page = false ) {
+
+	global $wpdb;
+
+	$user_id = bp_loggedin_user_id();
+	$bp      = buddypress();
+	$sql     = "SELECT * FROM {$bp->friends->table_name} " .
+			   "WHERE (initiator_user_id = %d OR friend_user_id = %d) " .
+			   "AND is_confirmed = 1 " .
+			   "AND YEAR(date_created) = '%s' AND MONTH(date_created) = '%s' AND DAYOFMONTH(date_created) = '%s' " .
+			   "ORDER BY date_created DESC";
+
+	if ( false !== $per_page ) {
+
+		$sql .= " LIMIT {$per_page}";
+	}
+
+	$friendships = $wpdb->get_results( $wpdb->prepare( $sql, $user_id, $user_id, $year, date( 'm' ), date( 'd' ) ) );
+
+	return $friendships;
+}
+
+
+/**
+ * Check if memories are allowed on memory page.
+ *
+ * @since 1.1.0
+ *
+ * @return bool
+ */
+function bpm_is_memory_page_allowed() {
+
+	// Checking if user is logged in and BuddyPress plugin is active.
+	if ( is_user_logged_in() && is_buddypress_active() ) {
+
+		return true;
+	}
+
+	return false;
 }

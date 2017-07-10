@@ -26,24 +26,24 @@ msgstr ""
 msgid "Profile picture"
 msgstr ""
 
-#: includes/bp-memories-functions.php:293
+#: includes/bp-memories-functions.php:298, includes/bp-memories-functions.php:367
 msgid "%d Year Ago Today"
 msgid_plural "%d Years Ago Today"
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/class-bp-memories-public.php:91
-msgid "On This Day"
+#: includes/bp-memories-functions.php:481
+msgid "%1$sYou%2$s and %3$s became friends"
 msgstr ""
 
-#: public/class-bp-memories-public.php:114, public/partials/activities.php:57
-msgid "View Discussion"
-msgstr ""
-
-#: public/class-bp-memories-public.php:154
+#: public/partials/single/activity/footer.php:24
 msgid "See More Memories"
 msgstr ""
 
-#: public/partials/activities.php:90
-msgid "No memories found.!"
+#: public/partials/single/activity/header.php:18
+msgid "On This Day"
+msgstr ""
+
+#: public/partials/single/memory.php:31
+msgid "View Discussion"
 msgstr ""
